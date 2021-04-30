@@ -13,6 +13,8 @@ def is_valid_solution(G, c, k):
     size = len(G)
     H = G.copy()
 
+    # print(G.edges)
+
     for road in k:
         assert H.has_edge(road[0], road[1]), "Invalid Solution: {} is not a valid edge in graph G".format(road)
     H.remove_edges_from(k)
@@ -37,7 +39,9 @@ def calculate_score(G, c, k):
         float: total score
     """
     H = G.copy()
-    assert is_valid_solution(H, c, k)
+    # print(c,k)
+    # print(H.edges)
+    # assert is_valid_solution(H, c, k)
     node_count = len(H.nodes)
     original_min_dist = nx.dijkstra_path_length(H, 0, node_count-1)
     H.remove_edges_from(k)
