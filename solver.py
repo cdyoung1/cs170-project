@@ -549,56 +549,52 @@ def get_nodes(G,S,node_limit):
 
 # Usage: python3 solver.py test.in
 
-if __name__ == '__main__':
-    assert len(sys.argv) == 2 
+# if __name__ == '__main__':
+#     assert len(sys.argv) == 2 
 
-    path = sys.argv[1]
-    file_name = basename(normpath(path))[:-3]
-    G = read_input_file(path)
+#     path = sys.argv[1]
+#     file_name = basename(normpath(path))[:-3]
+#     G = read_input_file(path)
     
-    # c,k = new_solve(G,3,50)
-    # c,k = min_cut_solve(G,50,3)
-    max_c,max_k = remove_min_cut(G,50,3)
-    max_score = calculate_score(G, max_c,max_k)
-    # for i in range(1):
-    #     c,k = remove_min_cut(G,50,3)
-    #     score = calculate_score(G, c, k)
-    #     print(f"Shortest Path Difference: {score}")
-    #     if score > max_score:
-    #         max_c, max_k = c, k
-    #         max_score = score
-    # print(max_c,max_k)
-    # assert is_valid_solution(G, c, k)
-    print("Best score:", max_score)
-    write_output_file(G, max_c,max_k, f'outputs/small/{file_name}.out')
+#     # c,k = new_solve(G,3,50)
+#     # c,k = min_cut_solve(G,50,3)
+#     max_c,max_k = remove_min_cut(G,50,3)
+#     max_score = calculate_score(G, max_c,max_k)
+#     # for i in range(1):
+#     #     c,k = remove_min_cut(G,50,3)
+#     #     score = calculate_score(G, c, k)
+#     #     print(f"Shortest Path Difference: {score}")
+#     #     if score > max_score:
+#     #         max_c, max_k = c, k
+#     #         max_score = score
+#     # print(max_c,max_k)
+#     # assert is_valid_solution(G, c, k)
+#     print("Best score:", max_score)
+#     write_output_file(G, max_c,max_k, f'outputs/small/{file_name}.out')
 
 
 # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
-# if __name__ == '__main__':
-#     # size = [("small",15,1), ("medium",50,3), ("large",100,5)]
-#     size = [("medium",50,3)]
-#     for s in size:
-#         inputs = glob.glob(f"inputs/{s[0]}/*")
-#         for input_path in inputs:
-#             file_name = basename(normpath(input_path))[:-3]
-#             print(file_name)
-#             output_path = f'outputs/{s[0]}/' + file_name + '.out'
-#             G = read_input_file(input_path)
+if __name__ == '__main__':
+    # size = [("small",15,1), ("medium",50,3), ("large",100,5)]
+    size = [("large",100,5)] # Change this tuple with whichever one in the above line to run on a specific folder
+    for s in size:
+        inputs = glob.glob(f"inputs/{s[0]}/*")
+        for input_path in inputs:
+            file_name = basename(normpath(input_path))[:-3]
+            print(file_name)
+            output_path = f'outputs/{s[0]}/' + file_name + '.out'
+            G = read_input_file(input_path)
 
-#             # max_c,max_k = min_cut_solve(G,s[1],s[2])
-#             max_c,max_k = remove_min_cut(G,s[1],s[2])
-#             max_score = calculate_score(G, max_c, max_k)
+            # max_c,max_k = min_cut_solve(G,s[1],s[2]) # Original Random Solver
+            max_c,max_k = remove_min_cut(G,s[1],s[2]) #Derek's new Random Solver
+            max_score = calculate_score(G, max_c, max_k)
 
-#             for i in range(50):
-#                 c,k = remove_min_cut(G,s[1],s[2])
-#                 score = calculate_score(G, c, k)
-#                 # print(f"Shortest Path Difference: {score}")
-#                 if score > max_score:
-#                     max_c, max_k = c, k
-#                     max_score = score
-#             c, k = min_cut_solve(G,s[1],s[2])
-#             # assert is_valid_solution(G, c, k)
-#             # distance = calculate_score(G, c, k)
-#             print("Score for '", file_name, "':", max_score)
-#             # print("Score for '", file_name, "':", distance)
-#             write_output_file(G, max_c, max_k, output_path)
+            for i in range(1): #Change the range for how many times u want to run it
+                # c,k = min_cut_solve(G,s[1],s[2]) # Original Random Solver
+                c,k = remove_min_cut(G,s[1],s[2]) # Derek's new Random Solver
+                score = calculate_score(G, c, k)
+                if score > max_score:
+                    max_c, max_k = c, k
+                    max_score = score
+            print("Score for '", file_name, "':", max_score)
+            write_output_file(G, max_c, max_k, output_path)

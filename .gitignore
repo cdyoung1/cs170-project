@@ -1,0 +1,5 @@
+outputs/small/*
+outputs/medium/*
+outputs/large/*
+results.txt
+submission.json
