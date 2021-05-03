@@ -1,5 +1,6 @@
-outputs/small/*
-outputs/medium/*
-outputs/large/*
+outputs/small/small-*
+outputs/medium/medium-*
+outputs/large/large-*
 results.txt
 submission.json
+__pycache__
