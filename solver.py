@@ -575,8 +575,8 @@ def get_nodes(G,S,node_limit):
 
 # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
-    # size = [("small",15,1), ("medium",50,3), ("large",100,5)]
-    size = [("medium",50,3)] # Change this tuple with whichever one in the above line to run on a specific folder
+    size = [("small",15,1), ("medium",50,3), ("large",100,5)]
+    # size = [("medium",50,3)] # Change this tuple with whichever one in the above line to run on a specific folder
     for s in size:
         inputs = glob.glob(f"inputs/{s[0]}/*")
         for input_path in inputs:
