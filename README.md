@@ -21,11 +21,19 @@ When writing inputs/outputs:
 - Run the functions `read_input_file` and `read_output_file` to validate your files before submitting!
   - These are the functions run by the autograder to validate submissions
 
+Algorithm:
+- Our algorithm required multiple runs in order to obtain our best leaderboard scores since it incorporates randomness.
+
 How to run:
 - First, make sure there exists an outputs/ directory with the following subdirectories:
   - small/
   - medium/
   - large/
+
+- In the code itself, if you would like to run the alternate algorithm which helped to improve our small graph scores, do the following:
+  - Uncomment lines 508 and 513 which use the remove_min_cut function
+  - Comment lines 507 and 512 which use the min_cut_solve function
+  - run the algorithm using the same command below
 
 To run the algorithm, enter the following in the terminal:
 

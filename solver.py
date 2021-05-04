@@ -493,9 +493,6 @@ def get_nodes(G,S,node_limit):
 
 # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
-    # assert len(sys.argv) == 2
-    # solver = sys.argv[1]
-    # print(solver)
 
     size = [("small",15,1,200), ("medium",50,3,100), ("large",100,5,50)]
     for s in size:
@@ -507,21 +504,13 @@ if __name__ == '__main__':
             output_path = f'outputs/{s[0]}/' + file_name + '.out'
             G = read_input_file(input_path)
 
-            # max_c, max_k = [],[]
-            # if solver == 'original':
             max_c,max_k = min_cut_solve(G,s[1],s[2]) # Original Random Solver
-            # elif solver == "improved":
-            #     max_c,max_k = remove_min_cut(G,s[1],s[2]) #new Random Solver
-            # else:
-            #     raise Exception("Must have 'original' or 'improved' as argument in terminal")
+            # max_c,max_k = remove_min_cut(G,s[1],s[2]) #new Random Solver
             max_score = calculate_score(G, max_c, max_k)
 
             for i in range(size_rep): #Change the range for how many times u want to run it
-                # c, k = [],[]
-                # if solver == "original":
                 c,k = min_cut_solve(G,s[1],s[2]) # Original Random Solver
-                # else:
-                #     c,k = remove_min_cut(G,s[1],s[2]) #new Random Solver
+                # c,k = remove_min_cut(G,s[1],s[2]) #new Random Solver
                 score = calculate_score(G, c, k)
                 if score > max_score:
                     max_c, max_k = c, k
