@@ -8,71 +8,52 @@ import random
 from itertools import islice
 from collections import defaultdict
 
-def solve(G,a,b):
-    """
-    Args:
-        G: networkx.Graph
-    Returns:
-        c: list of cities to remove
-        k: list of edges to remove
-    """
-    num_nodes = nx.number_of_nodes(G)
-    num_edges = nx.number_of_edges(G)
+# def solve(G,a,b):
+#     """
+#     Args:
+#         G: networkx.Graph
+#     Returns:
+#         c: list of cities to remove
+#         k: list of edges to remove
+#     """
+#     num_nodes = nx.number_of_nodes(G)
+#     num_edges = nx.number_of_edges(G)
 
-    k_constraint = min(a, num_edges)
-    c_constraint = b
+#     k_constraint = min(a, num_edges)
+#     c_constraint = b
 
-    nodes_removed = 0
-    edges_removed = 0
+#     nodes_removed = 0
+#     edges_removed = 0
 
-    removed_edge = False
-    last_edge = None
+#     removed_edge = False
+#     last_edge = None
 
-    H = G.copy()
+#     H = G.copy()
 
-    shortest_path = nx.dijkstra_path(H, 0, num_nodes - 1)
-    #print(shortest_path)
-    num_edges = len(shortest_path) - 1
-    #print("Num edges:", num_edges)
-    index = 0
-    while not removed_edge:
-        try:
-            sorted_edges = sorted( [(shortest_path[i], shortest_path[i+1]) for i in range(0,len(shortest_path) - 1)], key = (lambda e : H.edges[e[0],e[1]]['weight']) , reverse=True)
-            last_edge = sorted_edges[index]
-            H.remove_edge(*last_edge)
+#     shortest_path = nx.dijkstra_path(H, 0, num_nodes - 1)
+#     #print(shortest_path)
+#     num_edges = len(shortest_path) - 1
+#     #print("Num edges:", num_edges)
+#     index = 0
+#     while not removed_edge:
+#         try:
+#             sorted_edges = sorted( [(shortest_path[i], shortest_path[i+1]) for i in range(0,len(shortest_path) - 1)], key = (lambda e : H.edges[e[0],e[1]]['weight']) , reverse=True)
+#             last_edge = sorted_edges[index]
+#             H.remove_edge(*last_edge)
 
-            if nx.has_path(H, 0, num_nodes - 1):
-                return [], [last_edge]
-            else:
-                index += 1
+#             if nx.has_path(H, 0, num_nodes - 1):
+#                 return [], [last_edge]
+#             else:
+#                 index += 1
 
-        except nx.NetworkXNoPath:
-            print("No path from source to target node")
-        except Exception as e:
-            print("Last edge:", last_edge)
-            print(e)
-            break
-    return [],[]
-    # while nodes_removed < c and edges_removed < k:
-    #     try:
-    #         shortest_st_path = nx.dijkstra_path(G,0,num_nodes-1)
-    #     except nx.NetworkXNoPath:
-    #         break
-    
-    # # small graphs c = 1, not considering edges
-    # list of nodes
+#         except nx.NetworkXNoPath:
+#             print("No path from source to target node")
+#         except Exception as e:
+#             print("Last edge:", last_edge)
+#             print(e)
+#             break
+#     return [],[]
 
-    # while True:
-    #     get shortest path
-    #     construct subgraph
-    #     find min cut nodes to disconnect
-    #     if cardinality of min cut nodes <= c and original graph is not disconnected:
-    #         store min cut nodes
-    #     else:
-    #         store previous best
-    #         break
-    # while True:
-    #     get shortest path
 
 
 def min_cut_solve(G,a,b):
@@ -91,19 +72,14 @@ def min_cut_solve(G,a,b):
     # print(H.edges)
 
     while True:
-        # print("LOL")
         try:
             shortest_path = nx.dijkstra_path(H, 0, num_nodes - 1)
         except nx.NetworkXNoPath:
             break
-        #print(shortest_path == control)
         S.add_weighted_edges_from([(x, y, G.edges[x,y]["weight"]) for x,y in nx.utils.pairwise(shortest_path)])
-        #print(S.edges)
         nodes = nx.algorithms.connectivity.minimum_st_node_cut(S,0,num_nodes - 1)
-        #print(len(nodes))
         if len(nodes) > c_constraint:
             break
-        # edit H
         elif len(nodes) == 0:
             break
         else:
@@ -261,160 +237,160 @@ def get_k_shortest_path(G,S,edge_limit,node_limit):
 
     return list(removed_nodes), prev_edges
 
-def new_solve(G, edge_limit, node_limit):
+# def new_solve(G, edge_limit, node_limit):
 
-    with open("results.txt", "w") as f:
-        path_dict = defaultdict(int)
+#     with open("results.txt", "w") as f:
+#         path_dict = defaultdict(int)
 
-        num_nodes = nx.number_of_nodes(G)
-        num_edges = nx.number_of_edges(G)
+#         num_nodes = nx.number_of_nodes(G)
+#         num_edges = nx.number_of_edges(G)
 
-        k_constraint = min(edge_limit, num_edges)
-        c_constraint = node_limit
+#         k_constraint = min(edge_limit, num_edges)
+#         c_constraint = node_limit
 
-        removed_nodes = []
+#         removed_nodes = []
         
-        print("Beginning")
-        path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
-        print("Between")
-        path_list = list(path_generator)
-        print(len(path_list))
-        print("After")
+#         print("Beginning")
+#         path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
+#         print("Between")
+#         path_list = list(path_generator)
+#         print(len(path_list))
+#         print("After")
 
-        # path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
-        # S = nx.Graph()
+#         # path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
+#         # S = nx.Graph()
 
-        # print("Start")
-        # print("---------------------------")
+#         # print("Start")
+#         # print("---------------------------")
 
-        # prev_edges = []
-        # buffer = next(path_generator)
+#         # prev_edges = []
+#         # buffer = next(path_generator)
 
-        # while True:
-        #     #update subgraph
-        #     next_path = buffer
-        #     try:
-        #         buffer = next(path_generator)
-        #     except StopIteration:
-        #         break
-        #     # if not buffer:
-        #     #     break
-        #     print("next_path:", next_path)
-        #     S.add_weighted_edges_from([(x, y, G.edges[x,y]["weight"]) for x,y in nx.utils.pairwise(next_path)])
+#         # while True:
+#         #     #update subgraph
+#         #     next_path = buffer
+#         #     try:
+#         #         buffer = next(path_generator)
+#         #     except StopIteration:
+#         #         break
+#         #     # if not buffer:
+#         #     #     break
+#         #     print("next_path:", next_path)
+#         #     S.add_weighted_edges_from([(x, y, G.edges[x,y]["weight"]) for x,y in nx.utils.pairwise(next_path)])
 
-        #     #get nodes for current subgraph
-        #     returned_nodes, prev_edges = get_k_shortest_path(G,S,k_constraint,c_constraint)
-        #     print("returned_nodes:", returned_nodes)
-        #     print("prev_edges:", prev_edges)
-        #     path_dict[str(prev_edges)] += 1
-        #     #check for stop condition
-        #     S_copy = S.copy()
-        #     S_copy.remove_nodes_from(returned_nodes)
+#         #     #get nodes for current subgraph
+#         #     returned_nodes, prev_edges = get_k_shortest_path(G,S,k_constraint,c_constraint)
+#         #     print("returned_nodes:", returned_nodes)
+#         #     print("prev_edges:", prev_edges)
+#         #     path_dict[str(prev_edges)] += 1
+#         #     #check for stop condition
+#         #     S_copy = S.copy()
+#         #     S_copy.remove_nodes_from(returned_nodes)
 
-        #     if len(prev_edges) >= k_constraint:
-        #         break
-        #     else:
-        #         print("else")
-        #         if returned_nodes:
-        #             removed_nodes = returned_nodes
-        #         else:
-        #             print("Returned_nodes is empty")
-        #     f.write(str(path_dict))
+#         #     if len(prev_edges) >= k_constraint:
+#         #         break
+#         #     else:
+#         #         print("else")
+#         #         if returned_nodes:
+#         #             removed_nodes = returned_nodes
+#         #         else:
+#         #             print("Returned_nodes is empty")
+#         #     f.write(str(path_dict))
 
-        # # most recent S
-        # G_minus_nodes = G.copy()
-        # G_minus_nodes.remove_nodes_from(removed_nodes)
+#         # # most recent S
+#         # G_minus_nodes = G.copy()
+#         # G_minus_nodes.remove_nodes_from(removed_nodes)
 
-        # I = G_minus_nodes.copy()
-        # removed_edges = []
-        # for edge in prev_edges:
-        #     I.remove_edge(*edge)
-        #     if nx.is_connected(I) and nx.has_path(I,0,num_nodes-1):
-        #         removed_edges.append(edge)
-        #     else:
-        #         continue
+#         # I = G_minus_nodes.copy()
+#         # removed_edges = []
+#         # for edge in prev_edges:
+#         #     I.remove_edge(*edge)
+#         #     if nx.is_connected(I) and nx.has_path(I,0,num_nodes-1):
+#         #         removed_edges.append(edge)
+#         #     else:
+#         #         continue
         
-        # return removed_nodes, removed_edges
-        return [],[]
+#         # return removed_nodes, removed_edges
+#         return [],[]
 
-def new_new_solve(G, edge_limit, node_limit):
-    num_nodes = nx.number_of_nodes(G)
-    num_edges = nx.number_of_edges(G)
+# def new_new_solve(G, edge_limit, node_limit):
+#     num_nodes = nx.number_of_nodes(G)
+#     num_edges = nx.number_of_edges(G)
 
-    k_constraint = min(edge_limit, num_edges)
-    c_constraint = node_limit
+#     k_constraint = min(edge_limit, num_edges)
+#     c_constraint = node_limit
 
-    removed_nodes = []
+#     removed_nodes = []
     
-    # print("Beginning")
-    # path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
-    # print("Between")
-    # path_list = list(path_generator)
-    # print(len(path_list))
-    # print("After")
+#     # print("Beginning")
+#     # path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
+#     # print("Between")
+#     # path_list = list(path_generator)
+#     # print(len(path_list))
+#     # print("After")
 
-    # path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
-    length = dict(nx.single_source_bellman_ford_path_length(G,0))
-    neighbor_shortest_paths = nx.single_source_bellman_ford_path(G,0)
-    shortest_paths = sorted([ n for n in G.neighbors(num_nodes - 1)], key=(lambda x : length[x] + G.edges[x,num_nodes - 1]["weight"]))
-    S = nx.Graph()
+#     # path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
+#     length = dict(nx.single_source_bellman_ford_path_length(G,0))
+#     neighbor_shortest_paths = nx.single_source_bellman_ford_path(G,0)
+#     shortest_paths = sorted([ n for n in G.neighbors(num_nodes - 1)], key=(lambda x : length[x] + G.edges[x,num_nodes - 1]["weight"]))
+#     S = nx.Graph()
 
-    print("Start")
-    print("---------------------------")
+#     print("Start")
+#     print("---------------------------")
 
-    index = 0
-    prev_edges = []
-    # buffer = next(path_generator)
+#     index = 0
+#     prev_edges = []
+#     # buffer = next(path_generator)
 
-    while True:
-        #update subgraph
-        if index >= len(shortest_paths):
-            break
-        next_path = neighbor_shortest_paths[shortest_paths[index]]
-        index += 1
+#     while True:
+#         #update subgraph
+#         if index >= len(shortest_paths):
+#             break
+#         next_path = neighbor_shortest_paths[shortest_paths[index]]
+#         index += 1
 
-        # try:
-        #     buffer = next(path_generator)
-        # except StopIteration:
-        #     break
-        # if not buffer:
-        #     break
-        print("next_path:", next_path)
-        S.add_weighted_edges_from([(x, y, G.edges[x,y]["weight"]) for x,y in nx.utils.pairwise(next_path)])
+#         # try:
+#         #     buffer = next(path_generator)
+#         # except StopIteration:
+#         #     break
+#         # if not buffer:
+#         #     break
+#         print("next_path:", next_path)
+#         S.add_weighted_edges_from([(x, y, G.edges[x,y]["weight"]) for x,y in nx.utils.pairwise(next_path)])
 
-        #get nodes for current subgraph
-        returned_nodes, prev_edges = get_k_shortest_path(G,S,k_constraint,c_constraint)
-        print("returned_nodes:", returned_nodes)
-        print("prev_edges:", prev_edges)
-        # path_dict[str(prev_edges)] += 1
-        #check for stop condition
-        S_copy = S.copy()
-        S_copy.remove_nodes_from(returned_nodes)
+#         #get nodes for current subgraph
+#         returned_nodes, prev_edges = get_k_shortest_path(G,S,k_constraint,c_constraint)
+#         print("returned_nodes:", returned_nodes)
+#         print("prev_edges:", prev_edges)
+#         # path_dict[str(prev_edges)] += 1
+#         #check for stop condition
+#         S_copy = S.copy()
+#         S_copy.remove_nodes_from(returned_nodes)
 
-        if len(prev_edges) >= k_constraint:
-            break
-        else:
-            print("else")
-            if returned_nodes:
-                removed_nodes = returned_nodes
-            else:
-                print("Returned_nodes is empty")
-        # f.write(str(path_dict))
+#         if len(prev_edges) >= k_constraint:
+#             break
+#         else:
+#             print("else")
+#             if returned_nodes:
+#                 removed_nodes = returned_nodes
+#             else:
+#                 print("Returned_nodes is empty")
+#         # f.write(str(path_dict))
 
-    # most recent S
-    G_minus_nodes = G.copy()
-    G_minus_nodes.remove_nodes_from(removed_nodes)
+#     # most recent S
+#     G_minus_nodes = G.copy()
+#     G_minus_nodes.remove_nodes_from(removed_nodes)
 
-    I = G_minus_nodes.copy()
-    removed_edges = []
-    for edge in prev_edges:
-        I.remove_edge(*edge)
-        if nx.is_connected(I) and nx.has_path(I,0,num_nodes-1):
-            removed_edges.append(edge)
-        else:
-            continue
+#     I = G_minus_nodes.copy()
+#     removed_edges = []
+#     for edge in prev_edges:
+#         I.remove_edge(*edge)
+#         if nx.is_connected(I) and nx.has_path(I,0,num_nodes-1):
+#             removed_edges.append(edge)
+#         else:
+#             continue
     
-    return removed_nodes, removed_edges 
+#     return removed_nodes, removed_edges 
 
 # remove from min cut nodes
 def remove_min_cut(G,edge_limit, node_limit):
@@ -426,13 +402,8 @@ def remove_min_cut(G,edge_limit, node_limit):
 
     removed_nodes = []
 
-    # print("Beginning")
     path_generator = nx.shortest_simple_paths(G, 0, num_nodes-1, weight="weight")
-    # print("Between")
-    # path_list = list(path_generator)
-    # print(len(path_list))
-    # print("After")
-    
+
     S = nx.Graph()
     removed_nodes = []
 
@@ -453,41 +424,9 @@ def remove_min_cut(G,edge_limit, node_limit):
 
     removed_edges = []
     
-    # while True:
-    #     if len(removed_edges) >= k_constraint:
-    #         break
-
-    #     try:
-    #         shortest_path = nx.dijkstra_path(I, 0, num_nodes - 1)
-    #     except nx.NetworkXNoPath:
-    #         break
-
-    #     sorted_nodes = sorted(list(G.degree(shortest_path)), key = (lambda x : x[1]), reverse=True)
-    #     edge = None
-
-    #     for x in sorted_nodes:
-    #         if x == 0 or x == num_nodes - 1:
-    #             continue
-    #         i = shortest_path.index(x)
-    #         if G.edges[x,shortest_path[i+1]]["weight"] > G.edges[shortest_path[i-1], x]["weight"]:
-    #             edge = (shortest_path[i-1], x)
-    #         else:
-    #             edge = (x, shortest_path[i+1])
-
-    #         if edge:
-    #             copy = I.copy()
-    #             copy.remove_edge(*edge)
-    #             if nx.is_connected(copy) and nx.has_path(copy, 0, num_nodes - 1):
-    #                 removed_edges.append(edge)
-    #                 break
-    #         edge = None
-        
-    #     if not edge:
-    #         break
     prev_path = None
 
     while len(removed_edges) < k_constraint:
-        # print("BYE")
         try:
             shortest_path = nx.dijkstra_path(I, 0, num_nodes - 1)
         except nx.NetworkXNoPath:
@@ -525,26 +464,6 @@ def get_nodes(G,S,node_limit):
     
     return None
 
-# def get_edges(G,S,node_limit, edge_limit):
-#     num_nodes = nx.number_of_nodes(G)
-#     min_cut = nx.algorithms.connectivity.cuts.minimum_st_edge_cut(S, 0, num_nodes-1)
-
-#     if len(min_cut) <= edge_limit:
-#         I = G.copy()
-#         I.remove_nodes_from(min_cut)
-#         if nx.is_connected(I) and nx.has_path(I, 0, num_nodes - 1):
-#             return min_cut
-    
-#     return None
-        
-        
-    
-            
-
-
-
-
-
 # Here's an example of how to run your solver.
 
 # Usage: python3 solver.py test.in
@@ -572,12 +491,15 @@ def get_nodes(G,S,node_limit):
 #     print("Best score:", max_score)
 #     write_output_file(G, max_c,max_k, f'outputs/small/{file_name}.out')
 
-
 # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
-    size = [("small",15,1), ("medium",50,3), ("large",100,5)]
-    # size = [("medium",50,3)] # Change this tuple with whichever one in the above line to run on a specific folder
+    # assert len(sys.argv) == 2
+    # solver = sys.argv[1]
+    # print(solver)
+
+    size = [("small",15,1,200), ("medium",50,3,100), ("large",100,5,50)]
     for s in size:
+        size_rep = s[3]
         inputs = glob.glob(f"inputs/{s[0]}/*")
         for input_path in inputs:
             file_name = basename(normpath(input_path))[:-3]
@@ -585,13 +507,21 @@ if __name__ == '__main__':
             output_path = f'outputs/{s[0]}/' + file_name + '.out'
             G = read_input_file(input_path)
 
+            # max_c, max_k = [],[]
+            # if solver == 'original':
             max_c,max_k = min_cut_solve(G,s[1],s[2]) # Original Random Solver
-            # max_c,max_k = remove_min_cut(G,s[1],s[2]) #Derek's new Random Solver
+            # elif solver == "improved":
+            #     max_c,max_k = remove_min_cut(G,s[1],s[2]) #new Random Solver
+            # else:
+            #     raise Exception("Must have 'original' or 'improved' as argument in terminal")
             max_score = calculate_score(G, max_c, max_k)
 
-            for i in range(100): #Change the range for how many times u want to run it
+            for i in range(size_rep): #Change the range for how many times u want to run it
+                # c, k = [],[]
+                # if solver == "original":
                 c,k = min_cut_solve(G,s[1],s[2]) # Original Random Solver
-                # c,k = remove_min_cut(G,s[1],s[2]) # Derek's new Random Solver
+                # else:
+                #     c,k = remove_min_cut(G,s[1],s[2]) #new Random Solver
                 score = calculate_score(G, c, k)
                 if score > max_score:
                     max_c, max_k = c, k

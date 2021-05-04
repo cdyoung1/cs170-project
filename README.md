@@ -20,3 +20,15 @@ When writing inputs/outputs:
 - Make sure you use the functions `write_input_file` and `write_output_file` provided
 - Run the functions `read_input_file` and `read_output_file` to validate your files before submitting!
   - These are the functions run by the autograder to validate submissions
+
+How to run:
+- First, make sure there exists an outputs/ directory with the following subdirectories:
+  - small/
+  - medium/
+  - large/
+
+To run the algorithm, enter the following in the terminal:
+
+'''bash
+python3 solver.py
+'''
