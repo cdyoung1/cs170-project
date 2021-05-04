@@ -29,6 +29,6 @@ How to run:
 
 To run the algorithm, enter the following in the terminal:
 
-'''bash
+```bash
 python3 solver.py
-'''
+```
